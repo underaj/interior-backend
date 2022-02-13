@@ -17,7 +17,7 @@ exports.getAllProducts = (req, res, next) => {
   const data = req.body;
   const values = [data.name, data.registerDate, data.companyName, data.mediaUrl];
   conn.query(
-    "INSERT INTO product (name, register_date,company_name, media_url) VALUES(?)",
+    "INSERT INTO product (name, type, register_date,company_name, media_url) VALUES(?)",
     [values],
     function (err, data, fields) {
       if (err) return next(new AppError(err, 500));
