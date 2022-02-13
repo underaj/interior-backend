@@ -16,7 +16,7 @@ exports.getAllProducts = (req, res, next) => {
  exports.createProduct = (req, res, next) => {
   if (!req.body) return next(new AppError("No form data found", 404));
   const data = req.body;
-  const values = [data.name, data.type, format(newDate(), 'yyyy-MM-dd hh:mm:ss'), data.companyName, data.mediaUrl];
+  const values = [data.name, data.type, format(new Date(), 'yyyy-MM-dd hh:mm:ss'), data.companyName, data.mediaUrl];
   conn.query(
     "INSERT INTO product (name, type, register_date,company_name, media_url) VALUES(?)",
     [values],
@@ -24,7 +24,7 @@ exports.getAllProducts = (req, res, next) => {
       if (err) return next(new AppError(err, 500));
       res.status(201).json({
         status: "success",
-        message: "todo created!",
+        message: "Product created!",
       });
     }
   );
