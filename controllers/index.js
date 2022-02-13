@@ -21,12 +21,32 @@ exports.getAllProducts = (req, res, next) => {
   const values = [productId, data.name, data.modelNumber, data.type, data.category, data.price, data.supplierName, data.mediaUrl, format(currentDate, 'yyyy-MM-dd hh:mm:ss'), format(currentDate, 'yyyy-MM-dd hh:mm:ss')];
   conn.query(
     "INSERT INTO product (id, name, model_no, type, category, price, supplier_name, media_url, register_time, update_time) VALUES(?)",
-    [values],
+    values,
     function (err, data, fields) {
       if (err) return next(new AppError(err, 500));
       res.status(201).json({
         status: "success",
         message: "Product created",
+      });
+    }
+  );
+ };
+
+ exports.updateProduct = (req, res, next) => {
+  if (!req.params.id) {
+    return next(new AppError("No todo id found", 404));
+  }
+  const data = req.body;
+  const currentDate = new Date();
+  const values = [data.name, data.modelNumber, data.type, data.category, data.price, data.supplierName, data.mediaUrl, format(currentDate, 'yyyy-MM-dd hh:mm:ss'), req.params.id];
+  conn.query(
+    "UPDATE todolist SET name=?, model_no=?, type=?, category=?, price=?, supplierName=? mediaUrl=?, update_time=?  WHERE id=?",
+    values,
+    function (err, data, fields) {
+      if (err) return next(new AppError(err, 500));
+      res.status(201).json({
+        status: "success",
+        message: "Product updated",
       });
     }
   );
