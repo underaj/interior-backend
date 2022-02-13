@@ -1,8 +1,10 @@
 const mysql = require('mysql');
+require('dotenv').config();
+
 const conn = mysql.createConnection({
- host: "rm-wz9k4a0a001y93vxf.mysql.rds.aliyuncs.com",
- user: "underaj",
- password: "ching123!",
+ host: process.env.DATABASE_HOST,
+ user: process.env.DATABASE_USER,
+ password: process.env.DATABASE_PWD,
  database: "interior_design",
 });
 
