@@ -1,0 +1,35 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: "Deploy to test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/test.key
+          chmod 600 ~/.ssh/test.key
+          cat >>~/.ssh/config <<END
+          Host test
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/test.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_HOST: ${{secrets.SERVER_IP}}
+          SSH_USER: 'root'
+          SSH_KEY: ${{secrets.INTERIOR_KEY}}
+      - name: Stop web server
+        run:  ssh test 'pm2 stop 0'
+      - name: Pull latest repo & build
+        run:  ssh test 'cd /root/interior-backend && git pull origin master && npm install'
+      - name: Restart server
+        run:  ssh test 'pm2 start 0'
