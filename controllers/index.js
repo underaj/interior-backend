@@ -17,7 +17,7 @@ exports.getAllProducts = (req, res, next) => {
   if (!req.body) return next(new AppError("No form data found", 404));
   const data = req.body;
   const currentDate = new Date();
-  const productId = `${format(currentDate, 'yyyyMMdd')}${String(Date.now())}}`
+  const productId = `${format(currentDate, 'yyyyMMdd')}${String(Date.now())}`
   const values = [productId, data.name, data.modelNumber, data.type, data.category, data.price, data.supplierName, data.mediaUrl, format(currentDate, 'yyyy-MM-dd hh:mm:ss'), format(currentDate, 'yyyy-MM-dd hh:mm:ss')];
   conn.query(
     "INSERT INTO product (id, name, model_no, type, category, price, supplier_name, media_url, register_time, update_time) VALUES(?)",
