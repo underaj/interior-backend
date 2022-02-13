@@ -40,7 +40,7 @@ exports.getAllProducts = (req, res, next) => {
   const currentDate = new Date();
   const values = [data.name, data.modelNumber, data.type, data.category, data.price, data.supplierName, data.mediaUrl, format(currentDate, 'yyyy-MM-dd hh:mm:ss'), req.params.id];
   conn.query(
-    "UPDATE todolist SET name=?, model_no=?, type=?, category=?, price=?, supplierName=? mediaUrl=?, update_time=?  WHERE id=?",
+    "UPDATE product SET name=?, model_no=?, type=?, category=?, price=?, supplier_name=? media_url=?, update_time=?  WHERE id=?",
     values,
     function (err, data, fields) {
       if (err) return next(new AppError(err, 500));
